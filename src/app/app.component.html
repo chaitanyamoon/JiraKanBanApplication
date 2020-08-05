@@ -1,0 +1,163 @@
+<div class="container">
+	<h2 class="text-center"> JIRA Application</h2>
+	<!-- Add task button along with modal -->
+	<div>
+		<button class="btn btn-primary m-b-25p" (click)="open(content)" title="Add Task">Add Task</button>
+	</div>
+
+	<div class="example-container">
+	  <h4 class="text-13">BACKLOGS {{backlogs.length}}</h4>
+	  <div
+	    cdkDropList
+	    #backlogList="cdkDropList"
+	    [cdkDropListData]="backlogs"
+	    [cdkDropListConnectedTo]="[developmentList,codereviewList,acceptanceList]"
+	    class="example-list"
+	    (cdkDropListDropped)="drop($event)">
+	    <div class="example-box" *ngFor="let item of backlogs" cdkDrag>
+	    	<div class="pb-3 text-15 text-textDarkest overflow-x">{{item.description}}</div>
+	    	<div class="flex justify-between items-center">
+	    	<div class="profile-image" title="Assigne: Simon"></div>
+	    		<span class="p-r-10p">{{item.task | uppercase}}</span>
+	    		<span>
+	    			<i class="fa fa-arrow-up color-danger" aria-hidden="true"></i>
+	    			{{item.date}}
+	    		</span>
+	    	</div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="example-container">
+	  <h4 class="text-13">DEVELOPMENT {{development.length}}</h4>
+	  <div
+	    cdkDropList
+	    #developmentList="cdkDropList"
+	    [cdkDropListData]="development"
+	    [cdkDropListConnectedTo]="[backlogList,codereviewList,acceptanceList]"
+	    class="example-list"
+	    (cdkDropListDropped)="drop($event)">
+	    <div class="example-box" *ngFor="let item of development" cdkDrag>
+	    		<div class="pb-3 text-15 text-textDarkest overflow-x">{{item.description}}</div>
+		    	<div class="flex justify-between items-center">
+		    	<div class="profile-image" title="Assigne: Simon"></div>
+		    		<span class="p-r-10p">{{item.task | uppercase}}</span>
+		    		<span>
+		    			<i class="fa fa-arrow-up color-danger" aria-hidden="true"></i>
+		    			{{item.date}}
+	    			</span>
+		    	</div>
+	    	</div>
+	    </div>
+	</div>
+
+	<div class="example-container">
+	  <h4 class="text-13">CODE REVIEW {{codereview.length}}</h4>
+
+	  <div
+	    cdkDropList
+	    #codereviewList="cdkDropList"
+	    [cdkDropListData]="codereview"
+	    [cdkDropListConnectedTo]="[backlogList,developmentList,acceptanceList]"
+	    class="example-list"
+	    (cdkDropListDropped)="drop($event)">
+	    <div class="example-box" *ngFor="let item of codereview" cdkDrag>
+	    		<div class="pb-3 text-15 text-textDarkest overflow-x">{{item.description}}</div>
+		    	<div class="flex justify-between items-center">
+		    	<div class="profile-image" title="Assigne: Simon"></div>
+		    		<span class="p-r-10p">{{item.task | uppercase}}</span>
+		    		<span>
+		    			<i class="fa fa-arrow-up color-danger" aria-hidden="true"></i>
+		    			{{item.date}}
+	    			</span>
+		    	</div>
+	    	</div>
+	    </div>
+	</div>
+
+	<div class="example-container">
+	  <h4 class="text-13">ACCEPTANCE {{acceptance.length}}</h4>
+
+	  <div
+	    cdkDropList
+	    #acceptanceList="cdkDropList"
+	    [cdkDropListData]="acceptance"
+	    [cdkDropListConnectedTo]="[backlogList,developmentList,codereviewList]"
+	    class="example-list"
+	    (cdkDropListDropped)="drop($event)">
+	    <div class="example-box bg-color" *ngFor="let item of acceptance" cdkDrag>
+	    	<div class="pb-3 text-15 text-textDarkest overflow-x">{{item.description}}</div>
+		    	<div class="flex justify-between items-center">
+		    	<div class="profile-image" title="Assigne: Simon"></div>
+		    		<span class="p-r-10p">{{item.task | uppercase}}</span>
+		    		<span>
+		    			<i class="fa fa-arrow-up color-danger" aria-hidden="true"></i>
+		    			{{item.date}}
+	    			</span>
+		    	</div>
+	    	</div>
+	    </div>
+	</div>
+</div>	
+<div>
+	<ng-template #content let-modal>
+	  <div class="modal-header">
+	    <h4 class="modal-title text-center" id="modal-basic-title">Add New Task</h4>
+	    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+	      <span aria-hidden="true">&times;</span>
+	    </button>
+	  </div>
+	  <div class="modal-body">
+	   <!-- Horizontal material form -->
+	<form (ngSubmit)="onSubmit()" #myForm="ngForm">
+	  <!-- Grid row -->
+	  <div class="form-group row">
+	    <!-- Material input -->
+	    <label for="title" class="col-sm-2 col-form-label">Title</label>
+	    <div class="col-sm-10">
+	      <div class="md-form mt-0">
+	        <input mdbInput type="text" class="form-control" id="title" [(ngModel)]="title" name= "title" placeholder="Enter Title" required >
+	      </div>
+	    </div>
+	  </div>
+	  <!-- Grid row -->
+
+	   <!-- Grid row -->
+	  <div class="form-group row">
+	    <!-- Material input -->
+	    <label for="description" class="col-sm-2 col-form-label">Description</label>
+	    <div class="col-sm-10">
+	      <div class="md-form mt-0">
+	        <input mdbInput type="text" class="form-control" id="description" name="description" [(ngModel)]="description" placeholder="Enter Description" required >
+	      </div>
+	    </div>
+	  </div>
+	  <!-- Grid row -->
+
+	   <!-- Grid row -->
+	  <div class="form-group row">
+	    <!-- Material input -->
+	    <label for="date" class="col-sm-2 col-form-label">Due Date</label>
+	    <div class="col-sm-10">
+	      <div class="md-form mt-0">
+	       <div class="input-group">
+	      <input class="form-control" placeholder="yyyy-mm-dd"
+	             name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" [minDate]="minDate">
+	      <div class="input-group-append">
+	        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+	        	<i class='far fa-calendar-alt'></i>
+	        </button>
+	      </div>
+	    </div>
+	      </div>
+	    </div>
+	  </div>
+	  <!-- Grid row -->
+	</form>
+	<!-- Horizontal material form -->
+	  </div>
+	  <div class="modal-footer">
+	    <button type="submit" class="btn btn-outline-dark" title="save" [ngClass]="{'no-cursor': backlogs.length == 5 || !myForm.form.valid}" [disabled]="backlogs.length == 5 || !myForm.form.valid" (click)="modal.close('Save click');close()">Save</button>
+	  </div>
+	</ng-template>
+</div>
